@@ -4,418 +4,555 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>End-of-Day Closing Procedure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Josefin Sans:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* RESET & BASE */
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Inter', sans-serif;
-      background: #0d1b2a;
-      color: #e2eaf4;
+      font-family: 'DM Sans', sans-serif;
+      background: #0a1628;
+      color: #c8d8f0;
       min-height: 100vh;
-      padding-bottom: 80px;
+      padding-bottom: 100px;
     }
 
-    /* HERO SECTION */
+    /* ─── HERO ─────────────────────────────── */
     .hero {
       text-align: center;
-      padding: 50px 24px 20px;
+      padding: 52px 24px 18px;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse at top, rgba(56,139,253,0.12) 0%, transparent 70%);
+      pointer-events: none;
     }
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: rgba(59,158,255,0.1);
-      border: 1px solid rgba(59,158,255,0.25);
-      color: #7ec8ff;
-      font-size: 12px;
+      gap: 8px;
+      background: rgba(56,139,253,0.08);
+      border: 1px solid rgba(56,139,253,0.2);
+      color: #7dbeff;
+      font-size: 11px;
       font-weight: 600;
-      padding: 6px 16px;
-      border-radius: 50px;
-      margin-bottom: 20px;
+      letter-spacing: 2px;
+      padding: 6px 18px;
+      border-radius: 100px;
+      margin-bottom: 22px;
+      text-transform: uppercase;
     }
     .hero h1 {
-      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(2rem, 5.5vw, 3.2rem);
       font-weight: 800;
-      color: #ffffff;
+      color: #fff;
+      line-height: 1.1;
     }
-    .gradient {
-      background: linear-gradient(90deg, #3b9eff, #a78bfa);
+    .accent {
+      background: linear-gradient(135deg, #388bfd, #c084fc);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* PROGRESS TRACKER */
+    /* ─── PROGRESS CARD ─────────────────────── */
     .progress-card {
-      max-width: 850px;
-      margin: 10px auto 40px;
-      background: #132035;
-      border: 1px solid #1e3a5f;
-      border-radius: 16px;
-      padding: 24px;
+      max-width: 860px;
+      margin: 14px auto 38px;
+      background: #0f1f38;
+      border: 1px solid #1a3560;
+      border-radius: 18px;
+      padding: 26px 28px 22px;
+    }
+    #completion-msg {
+      display: none;
+      background: linear-gradient(135deg, #1a6b3c, #0f4d2a);
+      border: 1px solid #27ae60;
+      color: #6ee9a8;
+      padding: 14px 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-align: center;
+      letter-spacing: 1px;
     }
     .progress-top {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end; /* Aligns clock and percentage to bottom */
-      margin-bottom: 15px;
+      align-items: flex-end;
+      margin-bottom: 18px;
     }
-    
-    .date-time-group .date {
-      font-size: 0.9rem;
-      color: #6b8cbc;
-      margin-bottom: 4px;
+    .date-group .date {
+      font-size: 0.78rem;
+      color: #4a6fa0;
       font-weight: 500;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
     }
-    .date-time-group .time {
-      font-size: 1.6rem;
+    .date-group .clock {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.7rem;
       font-weight: 700;
       color: #fff;
+      letter-spacing: -0.5px;
     }
-
-    .status-group {
-      text-align: right;
-    }
-    .status-text { 
-      font-size: 0.9rem; 
-      color: #6b8cbc;
+    .status-group { text-align: right; }
+    .status-group .label {
+      font-size: 0.78rem;
+      color: #4a6fa0;
       margin-bottom: 4px;
     }
-    .pct-large {
-      font-size: 1.6rem;
+    .pct {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.7rem;
       font-weight: 800;
       color: #fff;
     }
-
-    .progress-bar-wrap {
-      background: #0d1b2a;
-      height: 8px;
+    .bar-wrap {
+      height: 6px;
+      background: #0a1628;
       border-radius: 10px;
       overflow: hidden;
-      clear: both;
     }
-    .progress-bar-fill {
+    .bar-fill {
       height: 100%;
-      background: linear-gradient(90deg, #3b9eff, #a78bfa);
+      background: linear-gradient(90deg, #388bfd, #c084fc);
       width: 0%;
-      transition: width 0.4s ease;
+      transition: width 0.45s cubic-bezier(.4,0,.2,1);
+      border-radius: 10px;
     }
 
-    /* STEPS CONTAINER */
+    /* ─── STEPS LIST ────────────────────────── */
     .steps-wrap {
-      max-width: 850px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 18px;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      gap: 16px;
     }
 
-    /* STEP CARD */
+    /* ─── STEP CARD ─────────────────────────── */
     .step-card {
-      background: #132035;
-      border: 1px solid #1e3a5f;
-      border-radius: 14px;
-      padding: 20px;
+      background: #0f1f38;
+      border: 1px solid #1a3560;
+      border-radius: 16px;
+      padding: 18px 20px;
       display: flex;
-      gap: 20px;
-      transition: all 0.3s ease;
+      align-items: flex-start;
+      gap: 16px;
+      transition: opacity 0.3s, border-color 0.3s, background 0.3s;
     }
     .step-card.done {
-      opacity: 0.5;
-      border-color: #27ae60;
-      background: #0f2218;
+      opacity: 0.45;
+      border-color: #1e5c35;
+      background: #0c1f16;
     }
 
-    .checkbox {
-      width: 26px;
-      height: 26px;
-      border: 2px solid #2c4f7c;
+    /* Checkbox */
+    .cb {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #243d6a;
       border-radius: 8px;
       cursor: pointer;
       flex-shrink: 0;
+      margin-top: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
     }
-    .step-card.done .checkbox {
+    .step-card.done .cb {
       background: #27ae60;
       border-color: #27ae60;
     }
-    .check-icon {
-      width: 16px;
-      height: 16px;
-      color: white;
-      display: none;
-    }
-    .step-card.done .check-icon { display: block; }
+    .cb svg { display: none; }
+    .step-card.done .cb svg { display: block; }
 
+    /* Step body */
     .step-body {
       flex: 1;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      gap: 20px;
+      gap: 16px;
+      min-width: 0;
     }
-    .step-info { flex: 1; }
-    .step-title {
-      font-size: 1.1rem;
+    .step-info { flex: 1; min-width: 0; }
+
+    .step-num {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
       font-weight: 700;
-      color: #fff;
+      letter-spacing: 2px;
+      color: #388bfd;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .step-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #e8f0ff;
       margin-bottom: 8px;
     }
-    .step-num { color: #3b9eff; margin-right: 8px; }
     .step-desc {
-      font-size: 0.95rem;
-      color: #6b8cbc;
-      line-height: 1.6;
+      font-size: 0.92rem;
+      color: #6a8bb8;
+      line-height: 1.65;
     }
     .note {
-      margin-top: 10px;
-      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 11px;
+      font-size: 0.82rem;
       color: #d4a827;
-      background: rgba(212, 168, 39, 0.1);
+      background: rgba(212,168,39,0.08);
+      border: 1px solid rgba(212,168,39,0.2);
       padding: 8px 12px;
-      border-radius: 6px;
-      border-left: 3px solid #d4a827;
+      border-radius: 8px;
     }
+    .note::before { content: "⚠"; flex-shrink: 0; }
 
-    .step-img-box {
-      width: 220px;
-      height: 140px;
+    /* ─── IMAGE THUMBNAIL + HOVER LIGHTBOX ──── */
+    .img-wrap {
+      position: relative;
+      width: 120px;
+      height: 90px;
       flex-shrink: 0;
       border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #1e3a5f;
-      background: #000;
+      overflow: visible;
+      cursor: zoom-in;
     }
-    .step-img-box img {
-      width: 100%;
-      height: 100%;
+    .img-thumb {
+      width: 120px;
+      height: 90px;
       object-fit: cover;
-    }
-
-    #completion-msg {
-      display: none;
-      text-align: center;
-      background: #27ae60;
-      color: white;
-      padding: 15px;
       border-radius: 10px;
-      margin-bottom: 20px;
-      font-weight: 700;
+      border: 1px solid #1a3560;
+      display: block;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .img-wrap:hover .img-thumb {
+      transform: scale(1.04);
+      box-shadow: 0 4px 24px rgba(56,139,253,0.3);
     }
 
-    @media (max-width: 650px) {
+    /* Hover zoom overlay */
+    .img-zoom {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(10,22,40,0.92);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .img-zoom.active { display: flex; }
+    .img-zoom img {
+      max-width: 90vw;
+      max-height: 88vh;
+      object-fit: contain;
+      border-radius: 14px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+      animation: zoomIn 0.22s cubic-bezier(.4,0,.2,1);
+    }
+    .zoom-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      font-size: 2rem;
+      color: #7dbeff;
+      cursor: pointer;
+      background: rgba(15,31,56,0.8);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.2s;
+    }
+    .zoom-close:hover { background: rgba(56,139,253,0.2); }
+
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    .emoji-box {
+      width: 120px;
+      height: 90px;
+      flex-shrink: 0;
+      border-radius: 10px;
+      border: 1px solid #1a3560;
+      background: #0a1628;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+    }
+
+    @media (max-width: 600px) {
       .step-body { flex-direction: column; }
-      .step-img-box { width: 100%; height: 200px; }
+      .img-wrap, .img-thumb, .emoji-box { width: 100%; height: 180px; }
     }
   </style>
 </head>
 <body>
 
-  <div class="hero">
-    <div class="hero-badge">OFFICE OPERATIONS</div>
-    <h1>End-of-Day <span class="gradient">Closing</span></h1>
-  </div>
+<div class="hero">
+  <div class="hero-badge">&#9679; Office Operations</div>
+  <h1>End-of-Day <span class="accent">Closing</span><br>Procedure</h1>
+</div>
 
-  <div class="progress-card">
-    <div id="completion-msg">✅ ALL STEPS COMPLETE. PREMISES SECURED.</div>
-    <div class="progress-top">
-      <div class="date-time-group">
-        <div class="date" id="current-date">Monday, April 13, 2026</div>
-        <div class="time" id="clock">00:00:00 AM</div>
-      </div>
-      <div class="status-group">
-        <div class="status-text" id="progress-text">0 of 9 steps completed</div>
-        <div class="pct-large" id="pct-display">0%</div>
-      </div>
+<div class="progress-card">
+  <div id="completion-msg">&#9989; Thank You 😍</div>
+  <div class="progress-top">
+    <div class="date-group">
+      <div class="date" id="cur-date"></div>
+      <div class="clock" id="cur-clock">--:-- --</div>
     </div>
-    <div class="progress-bar-wrap">
-      <div class="progress-bar-fill" id="progress-bar"></div>
+    <div class="status-group">
+      <div class="label" id="prog-text">0 of 10 steps completed</div>
+      <div class="pct" id="pct-val">0%</div>
     </div>
   </div>
+  <div class="bar-wrap"><div class="bar-fill" id="bar"></div></div>
+</div>
 
-  <div class="steps-wrap">
-    
-    <div class="step-card" id="step-1">
-      <div class="checkbox" onclick="toggleStep(1)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">01.</span> Climate Control</div>
-          <div class="step-desc">Switch OFF the AC using the remote and wait until the air ventilator closes completely.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/1.jpg" alt="AC Step">
-        </div>
-      </div>
+<div class="steps-wrap">
+  <div class="step-card" id="step-1">
+    <div class="cb" onclick="toggleStep(1)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
     </div>
-
-    <div class="step-card" id="step-2">
-      <div class="checkbox" onclick="toggleStep(2)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">02.</span> Distribution Board (DB)</div>
-          <div class="step-desc">Go to the main DB area and gently push the door; it will open.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/2.jpg" alt="DB Area">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-3">
-      <div class="checkbox" onclick="toggleStep(3)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">03.</span> Master Switches</div>
-          <div class="step-desc">Turn OFF all light switches and the AC master switch.</div>
-          <div class="note">Note: Camera lights will turn ON automatically within 5s.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/3.jpg" alt="Switches">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-4">
-      <div class="checkbox" onclick="toggleStep(4)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">04.</span> Washrooms & Doors</div>
-          <div class="step-desc">Verify washroom lights and fans are OFF. Lock all doors using Key or Biometric system.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="https://your-github-link.com/image4.jpg" alt="Locks">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-5">
-      <div class="checkbox" onclick="toggleStep(5)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">05.</span> Stairway & Ground Floor</div>
-          <div class="step-desc">Switch OFF all stairway and ground floor lights.</div>
-          <div class="note">Crucial: Keep the three front bulbs ON.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/5.jpg" alt="Lights">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-6">
-      <div class="checkbox" onclick="toggleStep(6)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">06.</span> Kitchen Check</div>
-          <div class="step-desc">Check the kitchen area and ensure that the lights and fan are switched OFF.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/6.jpg" alt="Kitchen">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-7">
-      <div class="checkbox" onclick="toggleStep(7)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">07.</span> External Shutters</div>
-          <div class="step-desc">Close all shutters. Use the two iron rods provided to pull them down safely.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/7.jpg" alt="Shutters">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-8">
-      <div class="checkbox" onclick="toggleStep(8)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">08.</span> Gate & Perimeter</div>
-          <div class="step-desc">Close the main gate and secure the area using the chain partition.</div>
-        </div>
-        <div class="step-img-box">
-          <img src="img/8.jpg" alt="Gate">
-        </div>
-      </div>
-    </div>
-
-    <div class="step-card" id="step-9">
-      <div class="checkbox" onclick="toggleStep(9)">
-        <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
-      </div>
-      <div class="step-body">
-        <div class="step-info">
-          <div class="step-title"><span class="step-num">09.</span> Key Handover</div>
-          <div class="step-desc">Hand over all keys to the Security team at HQ.</div>
-        </div>
-        <div class="step-img-box" style="display:flex; align-items:center; justify-content:center; background:#1e3a5f; color:#7ec8ff; font-size:2rem;">
-          🔑
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    const total = 9;
-    let completed = new Set();
-
-    function toggleStep(n) {
-      const card = document.getElementById('step-' + n);
-      if (completed.has(n)) {
-        completed.delete(n);
-        card.classList.remove('done');
-      } else {
-        completed.add(n);
-        card.classList.add('done');
-      }
-      updateProgress();
-    }
-
-    function updateProgress() {
-      const count = completed.size;
-      const pct = Math.round((count / total) * 100);
-      document.getElementById('progress-bar').style.width = pct + '%';
-      document.getElementById('progress-text').textContent = `${count} of ${total} steps completed`;
-      document.getElementById('pct-display').textContent = pct + '%';
-      
-      const msg = document.getElementById('completion-msg');
-      msg.style.display = (count === total) ? 'block' : 'none';
-    }
-
-    function startClock() {
-      setInterval(() => {
-        const now = new Date();
-        // Update Time
-        document.getElementById('clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 01</div>
+        <div class="step-title">Climate Control — AC Off</div>
+        <div class="step-desc">Switch <strong>OFF the AC using the remote</strong> and wait until the <strong>air ventilator closes completely</strong> before proceeding.</div>
         
-        // Update Date
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
-      }, 1000);
-    }
-    startClock();
-  </script>
+      </div>
+      <div class="img-wrap" onclick="openZoom(1)">
+          <img class="img-thumb" id="thumb-1" src="img/1.jpg" alt="Climate Control — AC Off">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-2">
+    <div class="cb" onclick="toggleStep(2)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 02</div>
+        <div class="step-title">Distribution Board (DB)</div>
+        <div class="step-desc">Go to the <strong>main DB area</strong> and <strong>gently push the door</strong> — it will open.</div>
+        
+      </div>
+      <div class="img-wrap" onclick="openZoom(2)">
+          <img class="img-thumb" id="thumb-2" src="img/2.jpg" alt="Distribution Board (DB)">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-3">
+    <div class="cb" onclick="toggleStep(3)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 03</div>
+        <div class="step-title">Master Switches</div>
+        <div class="step-desc">Turn <strong>OFF all light switches</strong> and the <strong>AC master switch</strong> inside the DB.</div>
+        <div class="note">Camera lights will turn ON automatically within 5 seconds — no action required.</div>
+      </div>
+      <div class="img-wrap" onclick="openZoom(3)">
+          <img class="img-thumb" id="thumb-3" src="img/3.jpg" alt="Master Switches">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-4">
+    <div class="cb" onclick="toggleStep(4)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 04</div>
+        <div class="step-title">Washroom Check</div>
+        <div class="step-desc">Verify that <strong>washroom lights</strong> and the <strong>exhaust fan are switched OFF</strong>.</div>
+        
+      </div>
+      <div class="img-wrap" onclick="openZoom(4)">
+          <img class="img-thumb" id="thumb-4" src="img/4.jpg" alt="Washroom Check">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-5">
+    <div class="cb" onclick="toggleStep(5)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 05</div>
+        <div class="step-title">Lock All Doors</div>
+        <div class="step-desc">Lock all doors using a <strong>Key</strong> or the <strong>Biometric system</strong>. For biometric locks, simply closing the door will lock it automatically.</div>
+        
+      </div>
+      <div class="img-wrap" onclick="openZoom(5)">
+          <img class="img-thumb" id="thumb-5" src="img/5.jpg" alt="Lock All Doors">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-6">
+    <div class="cb" onclick="toggleStep(6)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 06</div>
+        <div class="step-title">Stairway & Ground Floor Lights</div>
+        <div class="step-desc">Switch <strong>OFF all stairway lights and ground-floor lights</strong>.</div>
+        <div class="note">Keep the three front bulbs ON.</div>
+      </div>
+      <div class="img-wrap" onclick="openZoom(6)">
+          <img class="img-thumb" id="thumb-6" src="img/6.jpg" alt="Stairway & Ground Floor Lights">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-7">
+    <div class="cb" onclick="toggleStep(7)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 07</div>
+        <div class="step-title">Kitchen Check</div>
+        <div class="step-desc">Check the kitchen area and ensure that the <strong>lights and fan are switched OFF</strong>.</div>
+        
+      </div>
+      <div class="img-wrap" onclick="openZoom(7)">
+          <img class="img-thumb" id="thumb-7" src="img/7.jpg" alt="Kitchen Check">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-8">
+    <div class="cb" onclick="toggleStep(8)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 08</div>
+        <div class="step-title">External Shutters</div>
+        <div class="step-desc">Close <strong>all shutters</strong>. Use the <strong>two iron rods</strong> provided to pull them down safely.</div>
+        
+      </div>
+      <div class="img-wrap" onclick="openZoom(8)">
+          <img class="img-thumb" id="thumb-8" src="img/8.jpg" alt="External Shutters">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-9">
+    <div class="cb" onclick="toggleStep(9)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 09</div>
+        <div class="step-title">Main Gate</div>
+        <div class="step-desc">Close the <strong>main gate</strong> securely.</div>
+        
+      </div>
+      <div class="img-wrap" onclick="openZoom(9)">
+          <img class="img-thumb" id="thumb-9" src="img/9.jpg" alt="Main Gate">
+        </div>
+    </div>
+  </div>
+  <div class="step-card" id="step-10">
+    <div class="cb" onclick="toggleStep(10)">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-body">
+      <div class="step-info">
+        <div class="step-num">Step 10</div>
+        <div class="step-title">Secure Perimeter & Key Handover</div>
+        <div class="step-desc">Secure the area using the <strong>chain partition</strong>, then <strong>hand over all keys to the Security team at HQ</strong>.</div>
+        
+      </div>
+      <div class="emoji-box">&#128273;</div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox overlay -->
+<div class="img-zoom" id="zoom-overlay" onclick="closeZoom()">
+  <div class="zoom-close" onclick="closeZoom()">&#x2715;</div>
+  <img id="zoom-img" src="" alt="">
+</div>
+
+<script>
+const IMGS = {
+  img1: 'img/1.jpg',
+  img2: 'img/2.jpg',
+  img3: 'img/3.jpg',
+  img4: 'img/4.jpg',
+  img5: 'img/5.jpg',
+  img6: 'img/6.jpg',
+  img7: 'img/7.jpg',
+  img8: 'img/8.jpg',
+  img9: 'img/9.jpg',
+  img10: null
+};
+
+const TOTAL = 10;
+const done = new Set();
+
+function toggleStep(n) {
+  const card = document.getElementById('step-' + n);
+  if (done.has(n)) { done.delete(n); card.classList.remove('done'); }
+  else { done.add(n); card.classList.add('done'); }
+  updateProgress();
+}
+
+function updateProgress() {
+  const c = done.size;
+  const pct = Math.round((c / TOTAL) * 100);
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('prog-text').textContent = c + ' of ' + TOTAL + ' steps completed';
+  document.getElementById('pct-val').textContent = pct + '%';
+  document.getElementById('completion-msg').style.display = (c === TOTAL) ? 'block' : 'none';
+}
+
+function openZoom(n) {
+  const src = IMGS['img' + n];
+  if (!src) return;
+  document.getElementById('zoom-img').src = src;
+  document.getElementById('zoom-overlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeZoom() {
+  document.getElementById('zoom-overlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
+
+// Clock
+function tick() {
+  const now = new Date();
+  document.getElementById('cur-clock').textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
+  document.getElementById('cur-date').textContent = now.toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+}
+tick();
+setInterval(tick, 1000);
+</script>
 </body>
 </html>
