@@ -23,7 +23,6 @@
     .hero {
       text-align: center;
       padding: 52px 24px 18px;
-      position: relative;
     }
 
     .hero-badge {
@@ -57,9 +56,13 @@
     }
 
     /* ─── PROGRESS CARD ─────────────────────── */
-    .progress-card {
+    .progress-card-container {
       max-width: 860px;
       margin: 14px auto 38px;
+      padding: 0 18px; /* FIX: Added side padding to match step cards */
+    }
+
+    .progress-card {
       background: #0f1f38;
       border: 1px solid #1a3560;
       border-radius: 18px;
@@ -94,6 +97,22 @@
     .bar-wrap { height: 6px; background: #0a1628; border-radius: 10px; overflow: hidden; }
     .bar-fill { height: 100%; background: linear-gradient(90deg, #388bfd, #c084fc); width: 0%; transition: width 0.45s ease; }
 
+    /* ─── THANK YOU BANNER ─── */
+    #thanks-banner {
+      display: none;
+      text-align: center;
+      background: linear-gradient(135deg, #388bfd, #c084fc);
+      color: white;
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 700;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
     /* ─── STEPS LIST ────────────────────────── */
     .steps-wrap { max-width: 860px; margin: 0 auto; padding: 0 18px; display: flex; flex-direction: column; gap: 16px; }
 
@@ -105,14 +124,17 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+      cursor: pointer; /* Makes whole card feel interactive */
+      transition: background 0.2s;
     }
 
+    .step-card:hover { background: #132644; }
     .step-card.done { opacity: 0.45; border-color: #1e5c35; background: #0c1f16; }
 
     .step-card-header { display: flex; align-items: center; gap: 14px; }
     .cb {
       width: 28px; height: 28px; border: 2px solid #243d6a; border-radius: 8px;
-      cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
     }
     .step-card.done .cb { background: #27ae60; border-color: #27ae60; }
     .cb svg { display: none; }
@@ -122,12 +144,14 @@
     .step-title { font-family: 'Josefin Sans', sans-serif; font-size: 1.05rem; font-weight: 700; color: #e8f0ff; }
 
     .step-body { display: flex; justify-content: space-between; gap: 16px; padding-left: 42px; }
+    .step-info { flex: 1; pointer-events: none; } /* Text won't block the card click */
     .step-desc { font-size: 0.92rem; color: #6a8bb8; line-height: 1.65; }
 
     /* ─── IMAGE THUMBNAIL ─── */
     .img-wrap {
       width: 120px; height: 90px; flex-shrink: 0; border-radius: 10px; overflow: hidden;
       cursor: zoom-in; border: 1px solid #1a3560;
+      position: relative; z-index: 10; /* Ensures image click works separate from card click */
     }
     .img-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
 
@@ -143,25 +167,10 @@
 
     /* ─── MOBILE FIXES ─────────────────────── */
     @media (max-width: 600px) {
-      .progress-top {
-        flex-direction: column;
-        align-items: center; /* Center Aligned on Mobile */
-        text-align: center;
-        gap: 12px;
-      }
+      .progress-top { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
       .status-group { text-align: center; }
-
-      .step-body {
-        flex-direction: column;
-        padding-left: 0; /* Align with checkbox on small screens */
-        align-items: center;
-        text-align: center;
-      }
-
-      .img-wrap {
-        width: 100%;
-        height: 180px;
-      }
+      .step-body { flex-direction: column; padding-left: 0; align-items: center; text-align: center; }
+      .img-wrap { width: 100%; height: 180px; }
     }
   </style>
 </head>
@@ -173,19 +182,22 @@
     <h1>End-of-Day <span class="accent">Closing</span><br>Procedure</h1>
   </div>
 
-  <div class="progress-card">
-    <div class="progress-top">
-      <div class="date-group">
-        <div class="date" id="cur-date"></div>
-        <div class="clock" id="cur-clock">--:-- --</div>
+  <div class="progress-card-container">
+    <div id="thanks-banner">🎉 THANK YOU!.</div>
+    <div class="progress-card">
+      <div class="progress-top">
+        <div class="date-group">
+          <div class="date" id="cur-date"></div>
+          <div class="clock" id="cur-clock">--:-- --</div>
+        </div>
+        <div class="status-group">
+          <div class="label" id="prog-text">0 of 10 completed</div>
+          <div class="pct" id="pct-val">0%</div>
+        </div>
       </div>
-      <div class="status-group">
-        <div class="label" id="prog-text">0 of 10 steps completed</div>
-        <div class="pct" id="pct-val">0%</div>
+      <div class="bar-wrap">
+        <div class="bar-fill" id="bar"></div>
       </div>
-    </div>
-    <div class="bar-wrap">
-      <div class="bar-fill" id="bar"></div>
     </div>
   </div>
 
@@ -220,9 +232,12 @@
       const card = document.createElement('div');
       card.className = 'step-card';
       card.id = `step-${n}`;
+      // FIX: Clicking the card toggles the step
+      card.onclick = () => toggleStep(n);
+
       card.innerHTML = `
         <div class="step-card-header">
-          <div class="cb" onclick="toggleStep(${n})">
+          <div class="cb">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
           <div class="step-meta">
@@ -232,7 +247,10 @@
         </div>
         <div class="step-body">
           <div class="step-info"><div class="step-desc">${s.desc}</div></div>
-          ${s.img ? `<div class="img-wrap" onclick="openZoom('${s.img}')"><img class="img-thumb" src="${s.img}"></div>` : ''}
+          ${s.img ? `
+            <div class="img-wrap" onclick="event.stopPropagation(); openZoom('${s.img}')">
+              <img class="img-thumb" src="${s.img}">
+            </div>` : ''}
         </div>
       `;
       container.appendChild(card);
@@ -250,6 +268,10 @@
       document.getElementById('bar').style.width = pct + '%';
       document.getElementById('pct-val').textContent = pct + '%';
       document.getElementById('prog-text').textContent = `${done.size} of ${stepsData.length} completed`;
+      
+      // SHOW THANK YOU BANNER AT 100%
+      const banner = document.getElementById('thanks-banner');
+      banner.style.display = (pct === 100) ? 'block' : 'none';
     }
 
     function openZoom(src) {
