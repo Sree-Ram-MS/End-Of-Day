@@ -22,7 +22,7 @@
     /* ─── HERO ─────────────────────────────── */
     .hero {
       text-align: center;
-      padding: 52px 24px 18px;
+      padding: 52px 24px 10px; /* Reduced bottom padding */
     }
 
     .hero-badge {
@@ -37,13 +37,13 @@
       letter-spacing: 2px;
       padding: 6px 18px;
       border-radius: 100px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       text-transform: uppercase;
     }
 
     .hero h1 {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: clamp(2rem, 5.5vw, 3.2rem);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
       font-weight: 800;
       color: #fff;
       line-height: 1.1;
@@ -55,63 +55,77 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* ─── PROGRESS CARD ─────────────────────── */
+    /* ─── STICKY PROGRESS SECTION ───────────── */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(10, 22, 40, 0.8); /* Semi-transparent body color */
+      backdrop-filter: blur(12px); /* Modern blur effect */
+      -webkit-backdrop-filter: blur(12px);
+      padding: 15px 0;
+      margin-bottom: 25px;
+      border-bottom: 1px solid rgba(56, 139, 253, 0.1);
+    }
+
     .progress-card-container {
       max-width: 860px;
-      margin: 14px auto 38px;
-      padding: 0 18px; /* FIX: Added side padding to match step cards */
+      margin: 0 auto;
+      padding: 0 18px;
     }
 
     .progress-card {
       background: #0f1f38;
       border: 1px solid #1a3560;
       border-radius: 18px;
-      padding: 26px 28px 22px;
+      padding: 20px 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
     .progress-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-bottom: 18px;
+      margin-bottom: 14px;
     }
 
     .date-group .date {
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       color: #4a6fa0;
-      font-weight: 500;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .date-group .clock {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 1.7rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: #fff;
     }
 
     .status-group { text-align: right; }
-    .status-group .label { font-size: 0.78rem; color: #4a6fa0; margin-bottom: 4px; }
-    .pct { font-family: 'Josefin Sans', sans-serif; font-size: 1.7rem; font-weight: 800; color: #fff; }
+    .status-group .label { font-size: 0.75rem; color: #4a6fa0; margin-bottom: 2px; }
+    .pct { font-family: 'Josefin Sans', sans-serif; font-size: 1.4rem; font-weight: 800; color: #fff; }
 
     .bar-wrap { height: 6px; background: #0a1628; border-radius: 10px; overflow: hidden; }
-    .bar-fill { height: 100%; background: linear-gradient(90deg, #388bfd, #c084fc); width: 0%; transition: width 0.45s ease; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, #388bfd, #c084fc); width: 0%; transition: width 0.4s ease; }
 
-    /* ─── THANK YOU BANNER ─── */
+    /* ─── THANK YOU BANNER (Now inside sticky) ─── */
     #thanks-banner {
       display: none;
       text-align: center;
-      background: linear-gradient(135deg, #388bfd, #c084fc);
+      background: linear-gradient(135deg, #27ae60, #1e5c35);
       color: white;
-      padding: 15px;
+      padding: 12px;
       border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       font-family: 'Josefin Sans', sans-serif;
       font-weight: 700;
-      animation: fadeIn 0.5s ease;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      animation: slideDown 0.4s ease;
     }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ─── STEPS LIST ────────────────────────── */
     .steps-wrap { max-width: 860px; margin: 0 auto; padding: 0 18px; display: flex; flex-direction: column; gap: 16px; }
@@ -124,12 +138,12 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
-      cursor: pointer; /* Makes whole card feel interactive */
-      transition: background 0.2s;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .step-card:hover { background: #132644; }
-    .step-card.done { opacity: 0.45; border-color: #1e5c35; background: #0c1f16; }
+    .step-card:hover { background: #132644; transform: translateY(-2px); }
+    .step-card.done { opacity: 0.45; border-color: #27ae60; background: #0c1f16; transform: translateY(0); }
 
     .step-card-header { display: flex; align-items: center; gap: 14px; }
     .cb {
@@ -144,31 +158,32 @@
     .step-title { font-family: 'Josefin Sans', sans-serif; font-size: 1.05rem; font-weight: 700; color: #e8f0ff; }
 
     .step-body { display: flex; justify-content: space-between; gap: 16px; padding-left: 42px; }
-    .step-info { flex: 1; pointer-events: none; } /* Text won't block the card click */
+    .step-info { flex: 1; pointer-events: none; }
     .step-desc { font-size: 0.92rem; color: #6a8bb8; line-height: 1.65; }
 
     /* ─── IMAGE THUMBNAIL ─── */
     .img-wrap {
       width: 120px; height: 90px; flex-shrink: 0; border-radius: 10px; overflow: hidden;
       cursor: zoom-in; border: 1px solid #1a3560;
-      position: relative; z-index: 10; /* Ensures image click works separate from card click */
+      position: relative; z-index: 10;
     }
     .img-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     /* ─── LIGHTBOX ─── */
     .img-zoom {
       display: none; position: fixed; inset: 0; z-index: 9999;
-      background: rgba(5, 12, 25, 0.96); backdrop-filter: blur(10px);
+      background: rgba(5, 12, 25, 0.98); backdrop-filter: blur(15px);
       align-items: center; justify-content: center; padding: 20px;
     }
     .img-zoom.active { display: flex; }
-    .img-zoom img { max-width: 95%; max-height: 85vh; border-radius: 12px; }
-    .zoom-close { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2rem; cursor: pointer; }
+    .img-zoom img { max-width: 95%; max-height: 85vh; border-radius: 12px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+    .zoom-close { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 2.5rem; cursor: pointer; }
 
     /* ─── MOBILE FIXES ─────────────────────── */
     @media (max-width: 600px) {
-      .progress-top { flex-direction: column; align-items: center; text-align: center; gap: 12px; }
-      .status-group { text-align: center; }
+      .hero { padding: 40px 20px 10px; }
+      .progress-top { align-items: center; text-align: center; }
+      .date-group .clock, .pct { font-size: 1.2rem; }
       .step-body { flex-direction: column; padding-left: 0; align-items: center; text-align: center; }
       .img-wrap { width: 100%; height: 180px; }
     }
@@ -182,21 +197,23 @@
     <h1>End-of-Day <span class="accent">Closing</span><br>Procedure</h1>
   </div>
 
-  <div class="progress-card-container">
-    <div id="thanks-banner">🎉 THANK YOU!.</div>
-    <div class="progress-card">
-      <div class="progress-top">
-        <div class="date-group">
-          <div class="date" id="cur-date"></div>
-          <div class="clock" id="cur-clock">--:-- --</div>
+  <div class="sticky-header">
+    <div class="progress-card-container">
+      <div id="thanks-banner">🎉 THANK YOU! PREMISES SECURED.</div>
+      <div class="progress-card">
+        <div class="progress-top">
+          <div class="date-group">
+            <div class="date" id="cur-date"></div>
+            <div class="clock" id="cur-clock">--:-- --</div>
+          </div>
+          <div class="status-group">
+            <div class="label" id="prog-text">0 of 10 completed</div>
+            <div class="pct" id="pct-val">0%</div>
+          </div>
         </div>
-        <div class="status-group">
-          <div class="label" id="prog-text">0 of 10 completed</div>
-          <div class="pct" id="pct-val">0%</div>
+        <div class="bar-wrap">
+          <div class="bar-fill" id="bar"></div>
         </div>
-      </div>
-      <div class="bar-wrap">
-        <div class="bar-fill" id="bar"></div>
       </div>
     </div>
   </div>
@@ -232,7 +249,6 @@
       const card = document.createElement('div');
       card.className = 'step-card';
       card.id = `step-${n}`;
-      // FIX: Clicking the card toggles the step
       card.onclick = () => toggleStep(n);
 
       card.innerHTML = `
@@ -264,12 +280,14 @@
     }
 
     function updateProgress() {
-      const pct = Math.round((done.size / stepsData.length) * 100);
+      const total = stepsData.length;
+      const count = done.size;
+      const pct = Math.round((count / total) * 100);
+      
       document.getElementById('bar').style.width = pct + '%';
       document.getElementById('pct-val').textContent = pct + '%';
-      document.getElementById('prog-text').textContent = `${done.size} of ${stepsData.length} completed`;
+      document.getElementById('prog-text').textContent = `${count} of ${total} completed`;
       
-      // SHOW THANK YOU BANNER AT 100%
       const banner = document.getElementById('thanks-banner');
       banner.style.display = (pct === 100) ? 'block' : 'none';
     }
@@ -277,10 +295,12 @@
     function openZoom(src) {
       document.getElementById('zoom-img').src = src;
       document.getElementById('zoom-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden'; // Stop scrolling when zoomed
     }
 
     function closeZoom() {
       document.getElementById('zoom-overlay').classList.remove('active');
+      document.body.style.overflow = ''; // Resume scrolling
     }
 
     function tick() {
