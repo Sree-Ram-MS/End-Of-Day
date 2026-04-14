@@ -75,18 +75,11 @@
     /* ─── PROGRESS CARD ─────────────────────── */
     .progress-card {
       max-width: 860px;
-      margin: 14px 18px 38px;
+      margin: 14px auto 38px;
       background: #0f1f38;
       border: 1px solid #1a3560;
       border-radius: 18px;
       padding: 26px 28px 22px;
-    }
-
-    @media (min-width: 896px) {
-      .progress-card {
-        margin-left: auto;
-        margin-right: auto;
-      }
     }
 
     #completion-msg {
@@ -176,8 +169,8 @@
       border-radius: 16px;
       padding: 18px 20px;
       display: flex;
-      align-items: flex-start;
-      gap: 16px;
+      flex-direction: column;
+      gap: 14px;
       transition: opacity 0.3s, border-color 0.3s, background 0.3s;
     }
 
@@ -185,6 +178,34 @@
       opacity: 0.45;
       border-color: #1e5c35;
       background: #0c1f16;
+    }
+
+    /* Header row: checkbox + num + title */
+    .step-card-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .step-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* Body row: desc/note + image side by side (desktop) */
+    .step-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding-left: 42px;
+      /* align under title, past checkbox */
+      min-width: 0;
+    }
+
+    .step-info {
+      flex: 1;
+      min-width: 0;
     }
 
     /* Checkbox */
@@ -195,11 +216,11 @@
       border-radius: 8px;
       cursor: pointer;
       flex-shrink: 0;
-      margin-top: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: background 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .step-card.done .cb {
@@ -213,21 +234,6 @@
 
     .step-card.done .cb svg {
       display: block;
-    }
-
-    /* Step body */
-    .step-body {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      min-width: 0;
-    }
-
-    .step-info {
-      flex: 1;
-      min-width: 0;
     }
 
     .step-num {
@@ -423,18 +429,18 @@
 
       .progress-card {
         margin: 10px 12px 24px;
-        padding: 18px 16px 16px;
+        padding: 16px 14px 14px;
         border-radius: 14px;
       }
 
       .date-group .clock,
       .pct {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
       }
 
       .date-group .date,
       .status-group .label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
       }
 
       .steps-wrap {
@@ -444,19 +450,21 @@
 
       .step-card {
         padding: 14px 14px;
-        gap: 12px;
+        gap: 10px;
         border-radius: 14px;
       }
 
-      /* On mobile: text on top, image full-width below */
+      /* Body: stack desc + image vertically, keep indent */
       .step-body {
         flex-direction: column;
         gap: 12px;
+        padding-left: 42px;
       }
 
+      /* Image full width below desc */
       .img-wrap {
         width: 100%;
-        height: 180px;
+        height: 200px;
         border-radius: 10px;
         cursor: pointer;
       }
@@ -467,14 +475,14 @@
         border-radius: 10px;
       }
 
-      /* always show the zoom hint on mobile */
+      /* always show zoom hint on mobile */
       .img-wrap::after {
         opacity: 1;
       }
 
       .emoji-box {
         width: 100%;
-        height: 100px;
+        height: 90px;
       }
 
       .step-title {
@@ -487,9 +495,10 @@
 
       .note {
         font-size: 0.78rem;
+        display: block;
       }
 
-      /* Lightbox: full-screen on mobile */
+      /* Lightbox full-screen on mobile */
       .img-zoom {
         padding: 0;
         background: #000;
@@ -505,8 +514,8 @@
       .zoom-close {
         top: 12px;
         right: 12px;
-        width: 44px;
-        height: 44px;
+        width: 46px;
+        height: 46px;
         font-size: 1.2rem;
       }
     }
@@ -539,56 +548,72 @@
 
   <div class="steps-wrap">
     <div class="step-card" id="step-1">
-      <div class="cb" onclick="toggleStep(1)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 01</div>
+          <div class="step-title">Climate Control — AC Off</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 01</div>
-          <div class="step-title">Climate Control — AC Off</div>
           <div class="step-desc">Switch <strong>OFF the AC using the remote</strong> and wait until the <strong>air
-              ventilator closes completely</strong> before proceeding.</div>
-
+              ventilator closes completely</strong> before proceeding.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(1)">
           <img class="img-thumb" id="thumb-1" src="img/1.jpg" alt="Climate Control — AC Off">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-2">
-      <div class="cb" onclick="toggleStep(2)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(2)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 02</div>
+          <div class="step-title">Distribution Board (DB)</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 02</div>
-          <div class="step-title">Distribution Board (DB)</div>
           <div class="step-desc">Go to the <strong>main DB area</strong> and <strong>gently push the door</strong> — it
-            will open.</div>
-
+            will open.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(2)">
           <img class="img-thumb" id="thumb-2" src="img/2.jpg" alt="Distribution Board (DB)">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-3">
-      <div class="cb" onclick="toggleStep(3)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(3)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 03</div>
+          <div class="step-title">Master Switches</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 03</div>
-          <div class="step-title">Master Switches</div>
           <div class="step-desc">Turn <strong>OFF all light switches</strong> and the <strong>AC master switch</strong>
-            inside the DB.</div>
-          <div class="note">Camera lights will turn ON automatically within 5 seconds — no action required.</div>
+            inside the DB.
+          </div>
+          <div class="note">Camera lights will turn ON automatically within 5 seconds — no action required.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(3)">
           <img class="img-thumb" id="thumb-3" src="img/3.jpg" alt="Master Switches">
@@ -596,55 +621,71 @@
       </div>
     </div>
     <div class="step-card" id="step-4">
-      <div class="cb" onclick="toggleStep(4)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(4)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 04</div>
+          <div class="step-title">Washroom Check</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 04</div>
-          <div class="step-title">Washroom Check</div>
           <div class="step-desc">Verify that <strong>washroom lights</strong> and the <strong>exhaust fan are switched
-              OFF</strong>.</div>
-
+              OFF</strong>.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(4)">
           <img class="img-thumb" id="thumb-4" src="img/4.jpg" alt="Washroom Check">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-5">
-      <div class="cb" onclick="toggleStep(5)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(5)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 05</div>
+          <div class="step-title">Lock All Doors</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 05</div>
-          <div class="step-title">Lock All Doors</div>
           <div class="step-desc">Lock all doors using a <strong>Key</strong> or the <strong>Biometric system</strong>.
-            For biometric locks, simply closing the door will lock it automatically.</div>
-
+            For biometric locks, simply closing the door will lock it automatically.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(5)">
           <img class="img-thumb" id="thumb-5" src="img/5.jpg" alt="Lock All Doors">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-6">
-      <div class="cb" onclick="toggleStep(6)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(6)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 06</div>
+          <div class="step-title">Stairway & Ground Floor Lights</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 06</div>
-          <div class="step-title">Stairway & Ground Floor Lights</div>
-          <div class="step-desc">Switch <strong>OFF all stairway lights and ground-floor lights</strong>.</div>
-          <div class="note">Keep the three front bulbs ON.</div>
+          <div class="step-desc">Switch <strong>OFF all stairway lights and ground-floor lights</strong>.
+          </div>
+          <div class="note">Keep the three front bulbs ON.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(6)">
           <img class="img-thumb" id="thumb-6" src="img/6.jpg" alt="Stairway & Ground Floor Lights">
@@ -652,76 +693,96 @@
       </div>
     </div>
     <div class="step-card" id="step-7">
-      <div class="cb" onclick="toggleStep(7)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(7)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 07</div>
+          <div class="step-title">Kitchen Check</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 07</div>
-          <div class="step-title">Kitchen Check</div>
           <div class="step-desc">Check the kitchen area and ensure that the <strong>lights and fan are switched
-              OFF</strong>.</div>
-
+              OFF</strong>.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(7)">
           <img class="img-thumb" id="thumb-7" src="img/7.jpg" alt="Kitchen Check">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-8">
-      <div class="cb" onclick="toggleStep(8)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(8)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 08</div>
+          <div class="step-title">External Shutters</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 08</div>
-          <div class="step-title">External Shutters</div>
           <div class="step-desc">Close <strong>all shutters</strong>. Use the <strong>two iron rods</strong> provided to
-            pull them down safely.</div>
-
+            pull them down safely.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(8)">
           <img class="img-thumb" id="thumb-8" src="img/8.jpg" alt="External Shutters">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-9">
-      <div class="cb" onclick="toggleStep(9)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(9)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 09</div>
+          <div class="step-title">Main Gate</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 09</div>
-          <div class="step-title">Main Gate</div>
-          <div class="step-desc">Close the <strong>main gate</strong> securely.</div>
-
+          <div class="step-desc">Close the <strong>main gate</strong> securely.
+          </div>
         </div>
         <div class="img-wrap" onclick="openZoom(9)">
           <img class="img-thumb" id="thumb-9" src="img/9.jpg" alt="Main Gate">
+
         </div>
       </div>
     </div>
     <div class="step-card" id="step-10">
-      <div class="cb" onclick="toggleStep(10)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
-          <polyline points="20 6 9 17 4 12" />
-        </svg>
+      <div class="step-card-header">
+        <div class="cb" onclick="toggleStep(10)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <div class="step-meta">
+          <div class="step-num">Step 10</div>
+          <div class="step-title">Secure Perimeter & Key Handover</div>
+        </div>
       </div>
       <div class="step-body">
         <div class="step-info">
-          <div class="step-num">Step 10</div>
-          <div class="step-title">Secure Perimeter & Key Handover</div>
           <div class="step-desc">Secure the area using the <strong>chain partition</strong>, then <strong>hand over all
-              keys to the Security team at HQ</strong>.</div>
-
+              keys to the Security team at HQ</strong>.
+          </div>
         </div>
-        <div class="emoji-box">&#128273;</div>
+        <div class="emoji-box">&#128273;
+        </div>
       </div>
     </div>
   </div>
@@ -779,7 +840,7 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
 
-    // Clock
+    // Clockf
     function tick() {
       const now = new Date();
       document.getElementById('cur-clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
