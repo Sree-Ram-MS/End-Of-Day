@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>End-of-Day Closing Procedure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Josefin Sans:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Josefin Sans:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'DM Sans', sans-serif;
@@ -22,21 +29,25 @@
       padding: 52px 24px 18px;
       position: relative;
     }
+
     .hero::before {
       content: '';
       position: absolute;
-      top: 0; left: 50%;
+      top: 0;
+      left: 50%;
       transform: translateX(-50%);
-      width: 600px; height: 300px;
-      background: radial-gradient(ellipse at top, rgba(56,139,253,0.12) 0%, transparent 70%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse at top, rgba(56, 139, 253, 0.12) 0%, transparent 70%);
       pointer-events: none;
     }
+
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(56,139,253,0.08);
-      border: 1px solid rgba(56,139,253,0.2);
+      background: rgba(56, 139, 253, 0.08);
+      border: 1px solid rgba(56, 139, 253, 0.2);
       color: #7dbeff;
       font-size: 11px;
       font-weight: 600;
@@ -46,6 +57,7 @@
       margin-bottom: 22px;
       text-transform: uppercase;
     }
+
     .hero h1 {
       font-family: 'Josefin Sans', sans-serif;
       font-size: clamp(2rem, 5.5vw, 3.2rem);
@@ -53,6 +65,7 @@
       color: #fff;
       line-height: 1.1;
     }
+
     .accent {
       background: linear-gradient(135deg, #388bfd, #c084fc);
       -webkit-background-clip: text;
@@ -62,12 +75,20 @@
     /* ─── PROGRESS CARD ─────────────────────── */
     .progress-card {
       max-width: 860px;
-      margin: 14px auto 38px;
+      margin: 14px 18px 38px;
       background: #0f1f38;
       border: 1px solid #1a3560;
       border-radius: 18px;
       padding: 26px 28px 22px;
     }
+
+    @media (min-width: 896px) {
+      .progress-card {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
     #completion-msg {
       display: none;
       background: linear-gradient(135deg, #1a6b3c, #0f4d2a);
@@ -82,12 +103,14 @@
       text-align: center;
       letter-spacing: 1px;
     }
+
     .progress-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       margin-bottom: 18px;
     }
+
     .date-group .date {
       font-size: 0.78rem;
       color: #4a6fa0;
@@ -95,6 +118,7 @@
       letter-spacing: 0.5px;
       margin-bottom: 4px;
     }
+
     .date-group .clock {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 1.7rem;
@@ -102,29 +126,36 @@
       color: #fff;
       letter-spacing: -0.5px;
     }
-    .status-group { text-align: right; }
+
+    .status-group {
+      text-align: right;
+    }
+
     .status-group .label {
       font-size: 0.78rem;
       color: #4a6fa0;
       margin-bottom: 4px;
     }
+
     .pct {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 1.7rem;
       font-weight: 800;
       color: #fff;
     }
+
     .bar-wrap {
       height: 6px;
       background: #0a1628;
       border-radius: 10px;
       overflow: hidden;
     }
+
     .bar-fill {
       height: 100%;
       background: linear-gradient(90deg, #388bfd, #c084fc);
       width: 0%;
-      transition: width 0.45s cubic-bezier(.4,0,.2,1);
+      transition: width 0.45s cubic-bezier(.4, 0, .2, 1);
       border-radius: 10px;
     }
 
@@ -149,6 +180,7 @@
       gap: 16px;
       transition: opacity 0.3s, border-color 0.3s, background 0.3s;
     }
+
     .step-card.done {
       opacity: 0.45;
       border-color: #1e5c35;
@@ -169,12 +201,19 @@
       justify-content: center;
       transition: background 0.2s, border-color 0.2s;
     }
+
     .step-card.done .cb {
       background: #27ae60;
       border-color: #27ae60;
     }
-    .cb svg { display: none; }
-    .step-card.done .cb svg { display: block; }
+
+    .cb svg {
+      display: none;
+    }
+
+    .step-card.done .cb svg {
+      display: block;
+    }
 
     /* Step body */
     .step-body {
@@ -185,7 +224,11 @@
       gap: 16px;
       min-width: 0;
     }
-    .step-info { flex: 1; min-width: 0; }
+
+    .step-info {
+      flex: 1;
+      min-width: 0;
+    }
 
     .step-num {
       font-family: 'Josefin Sans', sans-serif;
@@ -196,6 +239,7 @@
       text-transform: uppercase;
       margin-bottom: 6px;
     }
+
     .step-title {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 1.05rem;
@@ -203,11 +247,13 @@
       color: #e8f0ff;
       margin-bottom: 8px;
     }
+
     .step-desc {
       font-size: 0.92rem;
       color: #6a8bb8;
       line-height: 1.65;
     }
+
     .note {
       display: inline-flex;
       align-items: flex-start;
@@ -215,80 +261,141 @@
       margin-top: 11px;
       font-size: 0.82rem;
       color: #d4a827;
-      background: rgba(212,168,39,0.08);
-      border: 1px solid rgba(212,168,39,0.2);
+      background: rgba(212, 168, 39, 0.08);
+      border: 1px solid rgba(212, 168, 39, 0.2);
       padding: 8px 12px;
       border-radius: 8px;
     }
-    .note::before { content: "⚠"; flex-shrink: 0; }
 
-    /* ─── IMAGE THUMBNAIL + HOVER LIGHTBOX ──── */
+    .note::before {
+      content: "⚠";
+      flex-shrink: 0;
+    }
+
+    /* ─── IMAGE THUMBNAIL + LIGHTBOX ──── */
     .img-wrap {
       position: relative;
       width: 120px;
       height: 90px;
       flex-shrink: 0;
       border-radius: 10px;
-      overflow: visible;
+      overflow: hidden;
       cursor: zoom-in;
     }
+
     .img-thumb {
-      width: 120px;
-      height: 90px;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       border-radius: 10px;
       border: 1px solid #1a3560;
       display: block;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .img-wrap:hover .img-thumb {
-      transform: scale(1.04);
-      box-shadow: 0 4px 24px rgba(56,139,253,0.3);
+      transition: transform 0.25s, box-shadow 0.25s;
     }
 
-    /* Hover zoom overlay */
+    .img-wrap:hover .img-thumb {
+      transform: scale(1.06);
+      box-shadow: 0 4px 24px rgba(56, 139, 253, 0.35);
+    }
+
+    /* tap hint on mobile */
+    .img-wrap::after {
+      content: '🔍';
+      position: absolute;
+      bottom: 5px;
+      right: 6px;
+      font-size: 0.75rem;
+      background: rgba(10, 22, 40, 0.75);
+      border-radius: 4px;
+      padding: 2px 4px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .img-wrap:hover::after {
+      opacity: 1;
+    }
+
+    /* Lightbox overlay */
     .img-zoom {
       display: none;
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background: rgba(10,22,40,0.92);
-      backdrop-filter: blur(8px);
+      background: rgba(5, 12, 25, 0.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       align-items: center;
       justify-content: center;
-      cursor: zoom-out;
+      padding: 16px;
+      touch-action: manipulation;
     }
-    .img-zoom.active { display: flex; }
+
+    .img-zoom.active {
+      display: flex;
+    }
+
     .img-zoom img {
-      max-width: 90vw;
-      max-height: 88vh;
+      max-width: 100%;
+      max-height: 85vh;
+      width: auto;
+      height: auto;
       object-fit: contain;
-      border-radius: 14px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
-      animation: zoomIn 0.22s cubic-bezier(.4,0,.2,1);
+      border-radius: 12px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.8);
+      animation: zoomIn 0.22s cubic-bezier(.4, 0, .2, 1);
+      display: block;
     }
+
     .zoom-close {
       position: fixed;
-      top: 20px;
-      right: 24px;
-      font-size: 2rem;
-      color: #7dbeff;
+      top: 16px;
+      right: 16px;
+      font-size: 1.4rem;
+      color: #fff;
       cursor: pointer;
-      background: rgba(15,31,56,0.8);
+      background: rgba(56, 139, 253, 0.25);
+      border: 1px solid rgba(56, 139, 253, 0.4);
       border-radius: 50%;
-      width: 44px;
-      height: 44px;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
-      line-height: 1;
+      z-index: 10000;
       transition: background 0.2s;
+      /* bigger tap target on mobile */
+      -webkit-tap-highlight-color: transparent;
     }
-    .zoom-close:hover { background: rgba(56,139,253,0.2); }
+
+    .zoom-close:hover,
+    .zoom-close:active {
+      background: rgba(56, 139, 253, 0.5);
+    }
+
+    .zoom-hint {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.78rem;
+      color: rgba(200, 216, 240, 0.5);
+      pointer-events: none;
+      z-index: 10000;
+      white-space: nowrap;
+    }
 
     @keyframes zoomIn {
-      from { opacity: 0; transform: scale(0.88); }
-      to   { opacity: 1; transform: scale(1); }
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
 
     .emoji-box {
@@ -304,255 +411,383 @@
       font-size: 2.4rem;
     }
 
+    /* ─── MOBILE ────────────────────────────── */
     @media (max-width: 600px) {
-      .step-body { flex-direction: column; }
-      .img-wrap, .img-thumb, .emoji-box { width: 100%; height: 180px; }
+      body {
+        padding-bottom: 60px;
+      }
+
+      .hero {
+        padding: 36px 16px 14px;
+      }
+
+      .progress-card {
+        margin: 10px 12px 24px;
+        padding: 18px 16px 16px;
+        border-radius: 14px;
+      }
+
+      .date-group .clock,
+      .pct {
+        font-size: 1.3rem;
+      }
+
+      .date-group .date,
+      .status-group .label {
+        font-size: 0.72rem;
+      }
+
+      .steps-wrap {
+        padding: 0 12px;
+        gap: 12px;
+      }
+
+      .step-card {
+        padding: 14px 14px;
+        gap: 12px;
+        border-radius: 14px;
+      }
+
+      /* On mobile: text on top, image full-width below */
+      .step-body {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .img-wrap {
+        width: 100%;
+        height: 180px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .img-thumb {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+      }
+
+      /* always show the zoom hint on mobile */
+      .img-wrap::after {
+        opacity: 1;
+      }
+
+      .emoji-box {
+        width: 100%;
+        height: 100px;
+      }
+
+      .step-title {
+        font-size: 0.98rem;
+      }
+
+      .step-desc {
+        font-size: 0.88rem;
+      }
+
+      .note {
+        font-size: 0.78rem;
+      }
+
+      /* Lightbox: full-screen on mobile */
+      .img-zoom {
+        padding: 0;
+        background: #000;
+      }
+
+      .img-zoom img {
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .zoom-close {
+        top: 12px;
+        right: 12px;
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div class="hero">
-  <div class="hero-badge">&#9679; Office Operations</div>
-  <h1>End-of-Day <span class="accent">Closing</span><br>Procedure</h1>
-</div>
+  <div class="hero">
+    <div class="hero-badge">&#9679; Office Operations</div>
+    <h1>End-of-Day <span class="accent">Closing</span><br>Procedure</h1>
+  </div>
 
-<div class="progress-card">
-  <div id="completion-msg">&#9989; Thank You 😍</div>
-  <div class="progress-top">
-    <div class="date-group">
-      <div class="date" id="cur-date"></div>
-      <div class="clock" id="cur-clock">--:-- --</div>
+  <div class="progress-card">
+    <div id="completion-msg">&#9989; ALL STEPS COMPLETE — PREMISES SECURED</div>
+    <div class="progress-top">
+      <div class="date-group">
+        <div class="date" id="cur-date"></div>
+        <div class="clock" id="cur-clock">--:-- --</div>
+      </div>
+      <div class="status-group">
+        <div class="label" id="prog-text">0 of 10 steps completed</div>
+        <div class="pct" id="pct-val">0%</div>
+      </div>
     </div>
-    <div class="status-group">
-      <div class="label" id="prog-text">0 of 10 steps completed</div>
-      <div class="pct" id="pct-val">0%</div>
+    <div class="bar-wrap">
+      <div class="bar-fill" id="bar"></div>
     </div>
   </div>
-  <div class="bar-wrap"><div class="bar-fill" id="bar"></div></div>
-</div>
 
-<div class="steps-wrap">
-  <div class="step-card" id="step-1">
-    <div class="cb" onclick="toggleStep(1)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 01</div>
-        <div class="step-title">Climate Control — AC Off</div>
-        <div class="step-desc">Switch <strong>OFF the AC using the remote</strong> and wait until the <strong>air ventilator closes completely</strong> before proceeding.</div>
-        
+  <div class="steps-wrap">
+    <div class="step-card" id="step-1">
+      <div class="cb" onclick="toggleStep(1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
       </div>
-      <div class="img-wrap" onclick="openZoom(1)">
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 01</div>
+          <div class="step-title">Climate Control — AC Off</div>
+          <div class="step-desc">Switch <strong>OFF the AC using the remote</strong> and wait until the <strong>air
+              ventilator closes completely</strong> before proceeding.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(1)">
           <img class="img-thumb" id="thumb-1" src="img/1.jpg" alt="Climate Control — AC Off">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-2">
-    <div class="cb" onclick="toggleStep(2)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 02</div>
-        <div class="step-title">Distribution Board (DB)</div>
-        <div class="step-desc">Go to the <strong>main DB area</strong> and <strong>gently push the door</strong> — it will open.</div>
-        
       </div>
-      <div class="img-wrap" onclick="openZoom(2)">
+    </div>
+    <div class="step-card" id="step-2">
+      <div class="cb" onclick="toggleStep(2)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 02</div>
+          <div class="step-title">Distribution Board (DB)</div>
+          <div class="step-desc">Go to the <strong>main DB area</strong> and <strong>gently push the door</strong> — it
+            will open.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(2)">
           <img class="img-thumb" id="thumb-2" src="img/2.jpg" alt="Distribution Board (DB)">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-3">
-    <div class="cb" onclick="toggleStep(3)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 03</div>
-        <div class="step-title">Master Switches</div>
-        <div class="step-desc">Turn <strong>OFF all light switches</strong> and the <strong>AC master switch</strong> inside the DB.</div>
-        <div class="note">Camera lights will turn ON automatically within 5 seconds — no action required.</div>
       </div>
-      <div class="img-wrap" onclick="openZoom(3)">
+    </div>
+    <div class="step-card" id="step-3">
+      <div class="cb" onclick="toggleStep(3)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 03</div>
+          <div class="step-title">Master Switches</div>
+          <div class="step-desc">Turn <strong>OFF all light switches</strong> and the <strong>AC master switch</strong>
+            inside the DB.</div>
+          <div class="note">Camera lights will turn ON automatically within 5 seconds — no action required.</div>
+        </div>
+        <div class="img-wrap" onclick="openZoom(3)">
           <img class="img-thumb" id="thumb-3" src="img/3.jpg" alt="Master Switches">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-4">
-    <div class="cb" onclick="toggleStep(4)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 04</div>
-        <div class="step-title">Washroom Check</div>
-        <div class="step-desc">Verify that <strong>washroom lights</strong> and the <strong>exhaust fan are switched OFF</strong>.</div>
-        
       </div>
-      <div class="img-wrap" onclick="openZoom(4)">
+    </div>
+    <div class="step-card" id="step-4">
+      <div class="cb" onclick="toggleStep(4)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 04</div>
+          <div class="step-title">Washroom Check</div>
+          <div class="step-desc">Verify that <strong>washroom lights</strong> and the <strong>exhaust fan are switched
+              OFF</strong>.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(4)">
           <img class="img-thumb" id="thumb-4" src="img/4.jpg" alt="Washroom Check">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-5">
-    <div class="cb" onclick="toggleStep(5)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 05</div>
-        <div class="step-title">Lock All Doors</div>
-        <div class="step-desc">Lock all doors using a <strong>Key</strong> or the <strong>Biometric system</strong>. For biometric locks, simply closing the door will lock it automatically.</div>
-        
       </div>
-      <div class="img-wrap" onclick="openZoom(5)">
+    </div>
+    <div class="step-card" id="step-5">
+      <div class="cb" onclick="toggleStep(5)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 05</div>
+          <div class="step-title">Lock All Doors</div>
+          <div class="step-desc">Lock all doors using a <strong>Key</strong> or the <strong>Biometric system</strong>.
+            For biometric locks, simply closing the door will lock it automatically.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(5)">
           <img class="img-thumb" id="thumb-5" src="img/5.jpg" alt="Lock All Doors">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-6">
-    <div class="cb" onclick="toggleStep(6)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 06</div>
-        <div class="step-title">Stairway & Ground Floor Lights</div>
-        <div class="step-desc">Switch <strong>OFF all stairway lights and ground-floor lights</strong>.</div>
-        <div class="note">Keep the three front bulbs ON.</div>
       </div>
-      <div class="img-wrap" onclick="openZoom(6)">
+    </div>
+    <div class="step-card" id="step-6">
+      <div class="cb" onclick="toggleStep(6)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 06</div>
+          <div class="step-title">Stairway & Ground Floor Lights</div>
+          <div class="step-desc">Switch <strong>OFF all stairway lights and ground-floor lights</strong>.</div>
+          <div class="note">Keep the three front bulbs ON.</div>
+        </div>
+        <div class="img-wrap" onclick="openZoom(6)">
           <img class="img-thumb" id="thumb-6" src="img/6.jpg" alt="Stairway & Ground Floor Lights">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-7">
-    <div class="cb" onclick="toggleStep(7)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 07</div>
-        <div class="step-title">Kitchen Check</div>
-        <div class="step-desc">Check the kitchen area and ensure that the <strong>lights and fan are switched OFF</strong>.</div>
-        
       </div>
-      <div class="img-wrap" onclick="openZoom(7)">
+    </div>
+    <div class="step-card" id="step-7">
+      <div class="cb" onclick="toggleStep(7)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 07</div>
+          <div class="step-title">Kitchen Check</div>
+          <div class="step-desc">Check the kitchen area and ensure that the <strong>lights and fan are switched
+              OFF</strong>.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(7)">
           <img class="img-thumb" id="thumb-7" src="img/7.jpg" alt="Kitchen Check">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-8">
-    <div class="cb" onclick="toggleStep(8)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 08</div>
-        <div class="step-title">External Shutters</div>
-        <div class="step-desc">Close <strong>all shutters</strong>. Use the <strong>two iron rods</strong> provided to pull them down safely.</div>
-        
       </div>
-      <div class="img-wrap" onclick="openZoom(8)">
+    </div>
+    <div class="step-card" id="step-8">
+      <div class="cb" onclick="toggleStep(8)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 08</div>
+          <div class="step-title">External Shutters</div>
+          <div class="step-desc">Close <strong>all shutters</strong>. Use the <strong>two iron rods</strong> provided to
+            pull them down safely.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(8)">
           <img class="img-thumb" id="thumb-8" src="img/8.jpg" alt="External Shutters">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-9">
-    <div class="cb" onclick="toggleStep(9)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 09</div>
-        <div class="step-title">Main Gate</div>
-        <div class="step-desc">Close the <strong>main gate</strong> securely.</div>
-        
       </div>
-      <div class="img-wrap" onclick="openZoom(9)">
+    </div>
+    <div class="step-card" id="step-9">
+      <div class="cb" onclick="toggleStep(9)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 09</div>
+          <div class="step-title">Main Gate</div>
+          <div class="step-desc">Close the <strong>main gate</strong> securely.</div>
+
+        </div>
+        <div class="img-wrap" onclick="openZoom(9)">
           <img class="img-thumb" id="thumb-9" src="img/9.jpg" alt="Main Gate">
         </div>
-    </div>
-  </div>
-  <div class="step-card" id="step-10">
-    <div class="cb" onclick="toggleStep(10)">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="step-body">
-      <div class="step-info">
-        <div class="step-num">Step 10</div>
-        <div class="step-title">Secure Perimeter & Key Handover</div>
-        <div class="step-desc">Secure the area using the <strong>chain partition</strong>, then <strong>hand over all keys to the Security team at HQ</strong>.</div>
-        
       </div>
-      <div class="emoji-box">&#128273;</div>
+    </div>
+    <div class="step-card" id="step-10">
+      <div class="cb" onclick="toggleStep(10)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5">
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      <div class="step-body">
+        <div class="step-info">
+          <div class="step-num">Step 10</div>
+          <div class="step-title">Secure Perimeter & Key Handover</div>
+          <div class="step-desc">Secure the area using the <strong>chain partition</strong>, then <strong>hand over all
+              keys to the Security team at HQ</strong>.</div>
+
+        </div>
+        <div class="emoji-box">&#128273;</div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Lightbox overlay -->
-<div class="img-zoom" id="zoom-overlay" onclick="closeZoom()">
-  <div class="zoom-close" onclick="closeZoom()">&#x2715;</div>
-  <img id="zoom-img" src="" alt="">
-</div>
+  <!-- Lightbox overlay -->
+  <div class="img-zoom" id="zoom-overlay" onclick="closeZoom()">
+    <div class="zoom-close" onclick="event.stopPropagation(); closeZoom()">&#x2715;</div>
+    <img id="zoom-img" src="" alt="" onclick="event.stopPropagation()">
+    <div class="zoom-hint">Tap anywhere to close</div>
+  </div>
 
-<script>
-const IMGS = {
-  img1: 'img/1.jpg',
-  img2: 'img/2.jpg',
-  img3: 'img/3.jpg',
-  img4: 'img/4.jpg',
-  img5: 'img/5.jpg',
-  img6: 'img/6.jpg',
-  img7: 'img/7.jpg',
-  img8: 'img/8.jpg',
-  img9: 'img/9.jpg',
-  img10: null
-};
+  <script>
+    const IMGS = {
+      img1: 'img/1.jpg',
+      img2: 'img/2.jpg',
+      img3: 'img/3.jpg',
+      img4: 'img/4.jpg',
+      img5: 'img/5.jpg',
+      img6: 'img/6.jpg',
+      img7: 'img/7.jpg',
+      img8: 'img/8.jpg',
+      img9: 'img/9.jpg',
+      img10: null
+    };
 
-const TOTAL = 10;
-const done = new Set();
+    const TOTAL = 10;
+    const done = new Set();
 
-function toggleStep(n) {
-  const card = document.getElementById('step-' + n);
-  if (done.has(n)) { done.delete(n); card.classList.remove('done'); }
-  else { done.add(n); card.classList.add('done'); }
-  updateProgress();
-}
+    function toggleStep(n) {
+      const card = document.getElementById('step-' + n);
+      if (done.has(n)) { done.delete(n); card.classList.remove('done'); }
+      else { done.add(n); card.classList.add('done'); }
+      updateProgress();
+    }
 
-function updateProgress() {
-  const c = done.size;
-  const pct = Math.round((c / TOTAL) * 100);
-  document.getElementById('bar').style.width = pct + '%';
-  document.getElementById('prog-text').textContent = c + ' of ' + TOTAL + ' steps completed';
-  document.getElementById('pct-val').textContent = pct + '%';
-  document.getElementById('completion-msg').style.display = (c === TOTAL) ? 'block' : 'none';
-}
+    function updateProgress() {
+      const c = done.size;
+      const pct = Math.round((c / TOTAL) * 100);
+      document.getElementById('bar').style.width = pct + '%';
+      document.getElementById('prog-text').textContent = c + ' of ' + TOTAL + ' steps completed';
+      document.getElementById('pct-val').textContent = pct + '%';
+      document.getElementById('completion-msg').style.display = (c === TOTAL) ? 'block' : 'none';
+    }
 
-function openZoom(n) {
-  const src = IMGS['img' + n];
-  if (!src) return;
-  document.getElementById('zoom-img').src = src;
-  document.getElementById('zoom-overlay').classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-function closeZoom() {
-  document.getElementById('zoom-overlay').classList.remove('active');
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
+    function openZoom(n) {
+      const src = IMGS['img' + n];
+      if (!src) return;
+      document.getElementById('zoom-img').src = src;
+      document.getElementById('zoom-overlay').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeZoom() {
+      document.getElementById('zoom-overlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeZoom(); });
 
-// Clock
-function tick() {
-  const now = new Date();
-  document.getElementById('cur-clock').textContent = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true});
-  document.getElementById('cur-date').textContent = now.toLocaleDateString('en-US', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
-}
-tick();
-setInterval(tick, 1000);
-</script>
+    // Clock
+    function tick() {
+      const now = new Date();
+      document.getElementById('cur-clock').textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+      document.getElementById('cur-date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+    tick();
+    setInterval(tick, 1000);
+  </script>
 </body>
+
 </html>
